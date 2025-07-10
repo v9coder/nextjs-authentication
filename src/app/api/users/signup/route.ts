@@ -1,6 +1,6 @@
 import { connect } from "@/dbConfig/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
-import User from "@/models/userModels";
+import User from "@/models/userModel";
 import bcryptjs from "bcryptjs";
 
 connect();
@@ -8,7 +8,7 @@ connect();
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
-        let { email, password } = reqBody;
+        let {username, email, password } = reqBody;
 
         if (!email || !password) {
             return NextResponse.json(
@@ -31,6 +31,7 @@ export async function POST(request: NextRequest) {
         const hashedPass = await bcryptjs.hash(password, salt);
 
         const newUser = new User({
+            username,
             email,
             password: hashedPass,
         });
@@ -47,6 +48,7 @@ export async function POST(request: NextRequest) {
         });
 
     } catch (error: any) {
+        console.error("Signup error:", error);
         return NextResponse.json(
             { error: error.message },
             { status: 500 }

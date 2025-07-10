@@ -8,7 +8,9 @@ import toast from "react-hot-toast";
 
 export default function SignUpPage() {
   const router = useRouter();
+
   const [user, setUser] = useState({
+    username: "",
     email: "",
     password: "",
   });
@@ -17,7 +19,11 @@ export default function SignUpPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (user.email.trim() && user.password.trim()) {
+    if (
+      user.username.trim() &&
+      user.email.trim() &&
+      user.password.trim()
+    ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
@@ -27,7 +33,11 @@ export default function SignUpPage() {
   const onSignUp = async () => {
     try {
       setLoading(true);
-      const response = await axios.post("/api/users/signup", user);
+      const response = await axios.post("/api/users/signup", {
+        username: user.username.trim(),
+        email: user.email.trim(),
+        password: user.password,
+      });
 
       toast.success("Signup successful! Redirecting...");
       router.push("/login");
@@ -43,6 +53,20 @@ export default function SignUpPage() {
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
       <div className="bg-gray-900 p-8 rounded-2xl shadow-lg w-full max-w-md">
         <h1 className="text-3xl font-bold text-white mb-6 text-center">Sign Up</h1>
+
+        <div className="mb-4">
+          <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-1">
+            Username
+          </label>
+          <input
+            id="username"
+            type="text"
+            value={user.username}
+            onChange={(e) => setUser({ ...user, username: e.target.value })}
+            placeholder="your_username"
+            className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </div>
 
         <div className="mb-4">
           <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
