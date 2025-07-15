@@ -13,7 +13,7 @@ export default function ProfilePage() {
   const logout = async () => {
     try {
       await axios.get("/api/users/logout");
-      toast.success("🚪 Logged out successfully");
+      toast.success("Logged out successfully");
       router.push("/login");
     } catch (error: any) {
       console.error(error.message);
@@ -36,9 +36,9 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#0d1117] text-white px-4">
-      <div className="bg-[#161b22] shadow-xl rounded-2xl p-8 w-full max-w-md border border-[#30363d]">
-        <h1 className="text-3xl font-bold mb-4 text-center text-blue-400">👤 Profile Page</h1>
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="bg-gray-900 p-8 rounded-2xl shadow-lg w-full max-w-md">
+        <h1 className="text-3xl font-bold text-white mb-6 text-center">Profile Page</h1>
         <p className="text-center mb-6 text-gray-400">Welcome to your profile dashboard</p>
 
         <div className="text-center mb-4">

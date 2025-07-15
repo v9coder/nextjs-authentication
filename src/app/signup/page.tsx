@@ -19,27 +19,27 @@ export default function SignUpPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (
-      user.username.trim() &&
-      user.email.trim() &&
-      user.password.trim()
-    ) {
-      setButtonDisabled(false);
-    } else {
-      setButtonDisabled(true);
-    }
+    const allFieldsFilled =
+      user.username.trim() && user.email.trim() && user.password.trim();
+    setButtonDisabled(!allFieldsFilled);
   }, [user]);
 
   const onSignUp = async () => {
     try {
       setLoading(true);
+
       const response = await axios.post("/api/users/signup", {
         username: user.username.trim(),
         email: user.email.trim(),
         password: user.password,
       });
 
-      toast.success("Signup successful! Redirecting...");
+      if (response.data?.message?.includes("Verification email sent")) {
+        toast.success("Verification email sent! Check your inbox.");
+      } else {
+        toast.success("Signup successful!");
+      }
+
       router.push("/login");
     } catch (error: any) {
       console.error("Signup error:", error);
